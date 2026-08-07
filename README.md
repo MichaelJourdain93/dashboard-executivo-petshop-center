@@ -65,6 +65,22 @@ O painel foi construído no AWS QuickSight. Como a assinatura foi encerrada, o r
 📄 **[Dashboard completo em PDF](midia/dashboard-one-page.pdf)** — o *one page* inteiro, com os três blocos.
 🎬 **[Gravação em MP4](midia/dashboard-passeio.mp4)** — mesma demonstração em qualidade cheia (2280x1080).
 
+## Análise e Insights
+
+📊 **[Análise completa com os insights de negócio](analise/insights.md)** — respostas às perguntas
+do desafio, calculadas de forma independente a partir dos CSVs.
+
+Os três achados que mudam decisão:
+
+1. **Faturamento e lucro apontam para lados opostos.** Ração e Farmácia são 61,3% do faturamento
+   mas só 41,3% da margem (18,4% contra 41,5% das demais categorias). Ranquear por faturamento
+   leva o investimento para o lado errado.
+2. **A queda de 11,27% no ticket médio de dezembro é um falso alarme.** O painel calcula ticket
+   como faturamento ÷ itens; por pedido, dezembro subiu 32,6%. O cliente levou 3 itens em vez de
+   2, e o mês fechou como o melhor do ano em faturamento e margem.
+3. **O visual de NPS soma as notas em vez de tirar a média** — exibe 9539 para os detratores
+   quando a nota média real é 2,97, invertendo a leitura do gráfico.
+
 ## Estrutura do Repositório
 
 ```
@@ -74,6 +90,11 @@ O painel foi construído no AWS QuickSight. Como a assinatura foi encerrada, o r
 │   ├── caramelo_dim_produtos.csv     # Dimensão de produtos
 │   ├── caramelo_nps.csv              # Respostas da pesquisa de NPS
 │   └── caramelo_wordcloud.csv        # Termos para a nuvem de palavras
+│
+├── analise/                  # Análise dos dados e insights de negócio
+│   ├── insights.md                   # Respostas às perguntas do desafio
+│   ├── analise.ps1                   # Métricas dos três blocos (reprodutível)
+│   └── verifica.ps1                  # Checagens de integridade e definições
 │
 ├── campos-calculados/        # Expressões de campos calculados do QuickSight
 │   └── campo_estado_calculado.txt    # Sigla da UF → nome do estado (geolocalização/mapa)
