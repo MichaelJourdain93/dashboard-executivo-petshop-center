@@ -1,10 +1,219 @@
-# Dashboard Executivo Petshop Center (AWS QuickSight)
+<details name="lang-toggle">
+<summary><b>🇺🇸 English</b></summary>
 
-## Desafio do Projeto — One Page: Resultados e Satisfação do Cliente
+# 🐾 Petshop Center Executive Dashboard — One Page: Results and Customer Satisfaction
 
-**Contexto:** A Caramelo Pet Center (rede omnichannel com +150 lojas, ecossistema de varejo, clínicas e estética, e +2 milhões de clientes ativos) enfrenta um cenário de "muitos dados, poucos insights", marcado por divergência de números, sobrecarga de relatórios sem fonte oficial da verdade e falta de conexão entre indicadores macro e causa raiz.
+![AWS QuickSight](https://img.shields.io/badge/AWS%20QuickSight-BI-232F3E?logo=amazonaws&logoColor=white)
+![Amazon S3](https://img.shields.io/badge/Amazon%20S3-Storage-569A31?logo=amazons3&logoColor=white)
+![Highcharts](https://img.shields.io/badge/Highcharts-Custom%20Visual-8087E8?logo=highcharts&logoColor=white)
+![PowerShell](https://img.shields.io/badge/PowerShell-Data%20Analysis-5391FE?logo=powershell&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Completed-brightgreen)
 
-**Objetivo:** Construir um relatório one page que reúna, em uma única tela, os principais indicadores de vendas/resultados e satisfação do cliente, dando à diretoria uma visão confiável e integrada do negócio.
+##
+![Author](https://img.shields.io/badge/Author-Michael%20Jourdain%20Gbedjinou-lightgrey?style=for-the-badge)
+
+![Dashboard walkthrough](midia/gifs/dashboard-passeio.gif)
+
+📄 **[Full dashboard as PDF](midia/dashboard-one-page.pdf)** · 🎬 **[Screen recording (MP4)](midia/dashboard-passeio.mp4)** · 📊 **[Analysis and business insights](analise/insights.md)**
+
+> The QuickSight subscription has been terminated, so the live dashboard is no longer reachable.
+> The recording above and the PDF preserve the result and the interactivity of the panel.
+
+## 🎯 Business problem
+
+**Caramelo Pet Center** — an omnichannel chain with 150+ stores, a retail/clinic/grooming ecosystem, and 2+ million active customers — faces a "lots of data, few insights" scenario, marked by diverging numbers, report overload with no single source of truth, and no connection between macro indicators and root cause.
+
+**Goal:** build a one page report gathering, on a single screen, the main sales/results and customer satisfaction indicators, giving the board a reliable and integrated view of the business.
+
+The panel is split into three blocks:
+
+### Block 1 — Overview
+- Big numbers for revenue, average ticket, and target achievement.
+- Editable target (currently R$ 4M, recalculated monthly by the finance team).
+- Pie chart of revenue by product category.
+- Monthly revenue evolution: absolute value (R$) and 100% stacked bar by category.
+- Line chart with the average ticket evolution.
+
+### Block 2 — Performance by Region
+- Revenue map by state, highlighting the best performing states.
+- Interactivity: selecting a state must filter the table next to it.
+- Table of quantity sold and revenue by animal type (dog, cat, rabbit, etc.) per state.
+
+### Block 3 — Customer Satisfaction (NPS)
+- Word cloud with the main compliments and complaints from comments.
+- Pie chart with the distribution of promoters, passives, and detractors.
+- Total respondents and average score indicators.
+- Filter by customer classification (e.g. isolate detractors and see their most frequent words).
+
+### Key requirements
+- Consolidate multiple sources into a single source of truth.
+- Ensure editable parameters (target).
+- Interactivity between visuals (state selection → table; classification filter → word cloud).
+
+## 🏗️ Architecture / Data flow
+
+```mermaid
+flowchart LR
+    subgraph Sources["Data sources (CSV)"]
+        A1[caramelo_fato_vendas<br/>15,000 orders]
+        A2[caramelo_dim_produtos<br/>36 SKUs]
+        A3[caramelo_nps<br/>5,000 responses]
+        A4[caramelo_wordcloud<br/>22 terms]
+    end
+
+    subgraph Storage["Storage - Amazon S3"]
+        B1[Raw bucket<br/>public-read bucket policy]
+    end
+
+    subgraph Datasets["Datasets layer - QuickSight"]
+        C1[Row-level calculated fields<br/>state code to state name]
+        C2[Geospatial properties<br/>State / Country]
+        C3[Joins<br/>fact x product dim x NPS]
+    end
+
+    subgraph Analyses["Analyses layer - QuickSight"]
+        D1[KPI calculated fields<br/>revenue, ticket, achievement]
+        D2[Parameters<br/>Yearly target / Granularity / R$ vs %]
+        D3[Actions<br/>map selection filters table]
+    end
+
+    subgraph Dash["Dashboard - One page"]
+        E1[Block 1<br/>Overview]
+        E2[Block 2<br/>Region]
+        E3[Block 3<br/>NPS]
+    end
+
+    A1 & A2 & A3 & A4 --> B1
+    B1 --> C1 --> C2 --> C3
+    C3 --> D1 & D2 & D3
+    D1 & D2 & D3 --> E1 & E2 & E3
+    E1 & E2 & E3 -.independent recalculation.-> F[Analysis in PowerShell<br/>analise/insights.md]
+    A1 & A2 & A3 -.-> F
+```
+
+## ⚙️ Execution phases
+
+### 1. Ingestion — Storage on Amazon S3
+The raw source files were uploaded to **Amazon S3**, which acts as the project's storage layer. The connection to S3 is made in the QuickSight **Datasets** tab, where the files are imported and connected as data sources. The bucket policy used is versioned in `configuracoes-aws/s3_bucket_policy.json`.
+
+### 2. Transformation — Datasets layer
+Still in the *Datasets* layer, the following were applied:
+- **Row-level calculated fields** (non-aggregated), which return the information on each record without affecting the granularity of later analyses — e.g. converting the state code into the full state name (`campos-calculados/campo_estado_calculado.txt`).
+- **Geospatial properties**, assigning the correct geographic type to fields such as state name and country name, enabling the map visuals.
+- **Joins between tables**, crossing information from different sources to compose the strategic views.
+
+### 3. Analysis layer — Analyses
+The *analyses* consume multiple *datasets* and concentrate the analytical modeling. In this layer were created:
+- **Calculated fields** to build the main indicators (KPIs) and the remaining blocks.
+- **Parameters** with two roles: giving agility to the interface and feeding filters that customize the visualization and steer the analyses, making the experience more dynamic and directed.
+- **Actions and settings** to add interactivity between visuals and enrich the visualization experience.
+- A **custom visual in Highcharts** for the NPS block (`visuais-customizados/`), adapted from the official `variablepie` example to display response volume against average score.
+
+### 4. Publication — Dashboard deploy
+Finally, the dashboard *deploy* closes the flow, delivering the consolidated view on a single screen — the *one page* of results and customer satisfaction.
+
+### 5. Independent validation
+The indicators were recalculated straight from the CSVs with PowerShell, without going through QuickSight, to validate the panel and produce the business insights — see `analise/`.
+
+## 🛠️ Tech stack and rationale
+
+| Layer | Technology | Why |
+|---|---|---|
+| Storage | **Amazon S3** | Raw file storage, native source for QuickSight |
+| BI / Dashboard | **AWS QuickSight** | Datasets, analyses, parameters, and actions in a single managed service |
+| Custom visual | **Highcharts** (`variablepie`) | NPS chart with volume and average score in the same mark |
+| Independent analysis | **PowerShell** (`Import-Csv`) | Recalculating metrics from the CSVs with no external dependency |
+| Documentation | Markdown + Mermaid | Versioned architecture and insights |
+
+## 💻 Reproducing the analysis
+
+The numbers in `analise/insights.md` are generated by scripts that read the CSVs in `dados/` directly:
+
+```powershell
+git clone https://github.com/MichaelJourdain93/dashboard-executivo-petshop-center.git
+cd dashboard-executivo-petshop-center
+
+./analise/analise.ps1     # metrics for the three blocks
+./analise/verifica.ps1    # integrity checks and average ticket definition
+```
+
+No installation required — only PowerShell, already present on Windows.
+
+## 📈 Results / Insights
+
+Full analysis in **[`analise/insights.md`](analise/insights.md)**. Headline figures for 2025: **R$ 3,282,372.74** in revenue (82.06% of the R$ 4M target), **27.39%** contribution margin, and an **NPS of −46.7**.
+
+- **Revenue and profit point in opposite directions.** Pet Food and Pharmacy are 61.3% of revenue but only 41.3% of margin (18.4% vs. 41.5% for the other categories). The four "small" categories — Accessories, Toys, Hygiene, and Food — already generate **58.7% of total margin**. A panel that ranks by revenue alone steers investment the wrong way.
+- **December's 11.27% drop in average ticket is a false alarm.** The panel computes ticket as revenue ÷ items; per order, December rose **32.6%** (R$ 208.52 → R$ 276.50). The basket went from 2.0 to 2.98 items per order — December was the best month of the year in both revenue and margin, yet it is flagged in red.
+- **The NPS visual sums the scores instead of averaging them.** It displays 9539 for detractors when the real average score is 2.97, inverting the chart's reading: the worst group appears with the highest "score". Fixing it means switching the aggregation from `sum` to `average`.
+- **The NPS itself (−46.7) is nowhere on the one page.** The panel shows the promoter/passive/detractor split but never the headline indicator the board expects.
+- **Espírito Santo has 330 NPS responses and zero sales** — the state does not exist in the fact table. On the map it renders blank, visually indistinguishable from "sold little".
+- **Regional concentration:** Southeast holds 45.4% of revenue, and SP/MG/RJ alone account for 45.3%. Margin is homogeneous across regions (27.1% to 27.8%), so the regional gap is about volume, not profitability.
+- **Methodological caveat:** the NPS scores are distributed almost uniformly across 0–10 (8.6% to 9.7% per score), the signature of randomly generated data. The −46.7 is arithmetic of that generation, and the differences between states and reasons are within sampling noise. The **sales** base, in contrast, has real and consistent structure — which is what sustains the Block 1 and 2 conclusions.
+
+## 📁 Project structure
+
+```
+dashboard-executivo-petshop-center/
+├── README.md
+├── analise/                          # Data analysis and business insights
+│   ├── insights.md                       # Answers to the challenge questions
+│   ├── analise.ps1                       # Metrics for the three blocks (reproducible)
+│   └── verifica.ps1                      # Integrity checks and definitions
+├── dados/                            # Raw data sources (CSV) loaded into Amazon S3
+│   ├── caramelo_fato_vendas.csv          # Sales fact table
+│   ├── caramelo_dim_produtos.csv         # Product dimension
+│   ├── caramelo_nps.csv                  # NPS survey responses
+│   └── caramelo_wordcloud.csv            # Terms for the word cloud
+├── campos-calculados/                # QuickSight calculated field expressions
+│   └── campo_estado_calculado.txt        # State code to state name (geolocation/map)
+├── visuais-customizados/             # Custom visual code (Highcharts)
+│   ├── nps_variablepie_original.js       # Base example from the Highcharts docs
+│   └── nps_variablepie_ajustado.json     # Version adapted to NPS (volume vs. quality)
+├── configuracoes-aws/                # AWS infrastructure settings
+│   └── s3_bucket_policy.json             # Public-read bucket policy for the objects
+├── imagens/                          # Images used in the dashboard
+│   ├── cachorro.png
+│   ├── gato.png
+│   ├── coelho.png
+│   ├── passaro.png
+│   ├── porquinho.png
+│   └── pet.jpg
+└── midia/                            # Visual record of the dashboard
+    ├── dashboard-one-page.pdf            # PDF export of the full one page
+    ├── dashboard-passeio.mp4             # Screen recording of the dashboard in use
+    └── gifs/
+        └── dashboard-passeio.gif         # Same recording, rendered in the README
+```
+
+</details>
+
+<details open name="lang-toggle">
+<summary><b>🇧🇷 Português</b></summary>
+
+# 🐾 Dashboard Executivo Petshop Center — One Page: Resultados e Satisfação do Cliente
+
+![AWS QuickSight](https://img.shields.io/badge/AWS%20QuickSight-BI-232F3E?logo=amazonaws&logoColor=white)
+![Amazon S3](https://img.shields.io/badge/Amazon%20S3-Storage-569A31?logo=amazons3&logoColor=white)
+![Highcharts](https://img.shields.io/badge/Highcharts-Visual%20Customizado-8087E8?logo=highcharts&logoColor=white)
+![PowerShell](https://img.shields.io/badge/PowerShell-An%C3%A1lise%20de%20Dados-5391FE?logo=powershell&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Conclu%C3%ADdo-brightgreen)
+
+##
+![Author](https://img.shields.io/badge/Author-Michael%20Jourdain%20Gbedjinou-lightgrey?style=for-the-badge)
+
+![Passeio pelo dashboard](midia/gifs/dashboard-passeio.gif)
+
+📄 **[Dashboard completo em PDF](midia/dashboard-one-page.pdf)** · 🎬 **[Gravação de tela (MP4)](midia/dashboard-passeio.mp4)** · 📊 **[Análise e insights de negócio](analise/insights.md)**
+
+> A assinatura do QuickSight foi encerrada, então o dashboard ao vivo não está mais acessível.
+> A gravação acima e o PDF preservam o resultado e a interatividade do painel.
+
+## 🎯 Problema de negócio
+
+A **Caramelo Pet Center** — rede omnichannel com +150 lojas, ecossistema de varejo, clínicas e estética, e +2 milhões de clientes ativos — enfrenta um cenário de "muitos dados, poucos insights", marcado por divergência de números, sobrecarga de relatórios sem fonte oficial da verdade e falta de conexão entre indicadores macro e causa raiz.
+
+**Objetivo:** construir um relatório one page que reúna, em uma única tela, os principais indicadores de vendas/resultados e satisfação do cliente, dando à diretoria uma visão confiável e integrada do negócio.
 
 O painel é dividido em três blocos:
 
@@ -31,92 +240,140 @@ O painel é dividido em três blocos:
 - Garantir parâmetros editáveis (meta).
 - Interatividade entre visuais (seleção de estado → tabela; filtro de classificação → nuvem de palavras).
 
-## Arquitetura do Projeto
+## 🏗️ Arquitetura / Fluxo de dados
 
-**1. Armazenamento (Amazon S3)**
-Os arquivos brutos das fontes de dados foram carregados no Amazon S3, que atua como camada de storage do projeto.
+```mermaid
+flowchart LR
+    subgraph Fontes["Fontes de dados (CSV)"]
+        A1[caramelo_fato_vendas<br/>15.000 pedidos]
+        A2[caramelo_dim_produtos<br/>36 SKUs]
+        A3[caramelo_nps<br/>5.000 respostas]
+        A4[caramelo_wordcloud<br/>22 termos]
+    end
 
-**2. Conexão e ingestão (Datasets — AWS QuickSight)**
-A conexão com o S3 é feita na aba *Datasets* do QuickSight, onde os arquivos são importados e conectados como fontes de dados.
+    subgraph Armazenamento["Armazenamento - Amazon S3"]
+        B1[Bucket de dados brutos<br/>policy de leitura publica]
+    end
 
-**3. Tratamento na camada de Datasets**
+    subgraph Datasets["Camada Datasets - QuickSight"]
+        C1[Campos calculados a nivel de linha<br/>sigla da UF para nome do estado]
+        C2[Propriedades de geolocalizacao<br/>Estado / Pais]
+        C3[Joins<br/>fato x dim produtos x NPS]
+    end
+
+    subgraph Analises["Camada Analyses - QuickSight"]
+        D1[Campos calculados de KPI<br/>faturamento, ticket, atingimento]
+        D2[Parametros<br/>Meta do Ano / Granularidade / R$ vs %]
+        D3[Actions<br/>selecao no mapa filtra a tabela]
+    end
+
+    subgraph Dash["Dashboard - One page"]
+        E1[Bloco 1<br/>Visao Geral]
+        E2[Bloco 2<br/>Regiao]
+        E3[Bloco 3<br/>NPS]
+    end
+
+    A1 & A2 & A3 & A4 --> B1
+    B1 --> C1 --> C2 --> C3
+    C3 --> D1 & D2 & D3
+    D1 & D2 & D3 --> E1 & E2 & E3
+    E1 & E2 & E3 -.recalculo independente.-> F[Analise em PowerShell<br/>analise/insights.md]
+    A1 & A2 & A3 -.-> F
+```
+
+## ⚙️ Fases de execução
+
+### 1. Ingestão — Armazenamento no Amazon S3
+Os arquivos brutos das fontes de dados foram carregados no **Amazon S3**, que atua como camada de storage do projeto. A conexão com o S3 é feita na aba *Datasets* do QuickSight, onde os arquivos são importados e conectados como fontes de dados. A bucket policy utilizada está versionada em `configuracoes-aws/s3_bucket_policy.json`.
+
+### 2. Transformação — Camada de Datasets
 Ainda na camada de *Datasets*, foram aplicados:
-- **Campos calculados a nível de linha** (não agregados), que retornam a informação em cada registro sem afetar a granularidade das análises feitas depois.
+- **Campos calculados a nível de linha** (não agregados), que retornam a informação em cada registro sem afetar a granularidade das análises feitas depois — por exemplo, a conversão da sigla da UF no nome completo do estado (`campos-calculados/campo_estado_calculado.txt`).
 - **Propriedades de geolocalização**, atribuindo o tipo geográfico correto a campos como nome de estado e nome de país, habilitando os visuais de mapa.
 - **Joins entre tabelas**, cruzando informações de diferentes fontes para compor as visões estratégicas.
 
-**4. Camada de Análise (Analyses)**
+### 3. Camada de Análise — Analyses
 As *analyses* consomem múltiplos *datasets* e concentram a modelagem analítica. Nesta camada foram criados:
 - **Campos calculados** para construir os indicadores principais (KPIs) e os demais blocos.
 - **Parâmetros** com dois papéis: dar agilidade à interface e alimentar filtros que personalizam a visualização e orientam as análises, deixando a experiência mais dinâmica e direcionada.
 - **Actions e configurações** para adicionar interatividade entre os visuais e enriquecer a experiência de visualização.
+- Um **visual customizado em Highcharts** para o bloco de NPS (`visuais-customizados/`), adaptado do exemplo oficial `variablepie` para exibir volume de respostas contra nota média.
 
-**5. Publicação (Deploy do Dashboard)**
+### 4. Publicação — Deploy do Dashboard
 Por fim, o *deploy* do dashboard fecha o fluxo, entregando a visão consolidada em uma única tela — o *one page* de resultados e satisfação do cliente.
 
-## Demonstração
+### 5. Validação independente
+Os indicadores foram recalculados direto dos CSVs em PowerShell, sem passar pelo QuickSight, para validar o painel e gerar os insights de negócio — ver `analise/`.
 
-O painel foi construído no AWS QuickSight. Como a assinatura foi encerrada, o registro visual abaixo preserva o resultado e a interatividade do dashboard.
+## 🛠️ Stack técnica e por quê
 
-![Passeio pelo dashboard](midia/gifs/dashboard-passeio.gif)
+| Camada | Tecnologia | Por quê |
+|---|---|---|
+| Armazenamento | **Amazon S3** | Storage dos arquivos brutos, fonte nativa para o QuickSight |
+| BI / Dashboard | **AWS QuickSight** | Datasets, analyses, parâmetros e actions em um único serviço gerenciado |
+| Visual customizado | **Highcharts** (`variablepie`) | Gráfico de NPS com volume e nota média na mesma marca |
+| Análise independente | **PowerShell** (`Import-Csv`) | Recálculo das métricas a partir dos CSVs sem dependência externa |
+| Documentação | Markdown + Mermaid | Arquitetura e insights versionados |
 
-*Meta editável recalculando o atingimento, alternância entre R$ e %, seleção de estado no mapa filtrando a tabela por tipo de animal, e a nuvem de palavras do NPS.*
+## 💻 Como reproduzir a análise
 
-📄 **[Dashboard completo em PDF](midia/dashboard-one-page.pdf)** — o *one page* inteiro, com os três blocos.
-🎬 **[Gravação em MP4](midia/dashboard-passeio.mp4)** — mesma demonstração em qualidade cheia (2280x1080).
+Os números de `analise/insights.md` são gerados por scripts que leem diretamente os CSVs de `dados/`:
 
-## Análise e Insights
+```powershell
+git clone https://github.com/MichaelJourdain93/dashboard-executivo-petshop-center.git
+cd dashboard-executivo-petshop-center
 
-📊 **[Análise completa com os insights de negócio](analise/insights.md)** — respostas às perguntas
-do desafio, calculadas de forma independente a partir dos CSVs.
+./analise/analise.ps1     # métricas dos três blocos
+./analise/verifica.ps1    # checagens de integridade e definição de ticket médio
+```
 
-Os três achados que mudam decisão:
+Não requer instalação — apenas o PowerShell, já presente no Windows.
 
-1. **Faturamento e lucro apontam para lados opostos.** Ração e Farmácia são 61,3% do faturamento
-   mas só 41,3% da margem (18,4% contra 41,5% das demais categorias). Ranquear por faturamento
-   leva o investimento para o lado errado.
-2. **A queda de 11,27% no ticket médio de dezembro é um falso alarme.** O painel calcula ticket
-   como faturamento ÷ itens; por pedido, dezembro subiu 32,6%. O cliente levou 3 itens em vez de
-   2, e o mês fechou como o melhor do ano em faturamento e margem.
-3. **O visual de NPS soma as notas em vez de tirar a média** — exibe 9539 para os detratores
-   quando a nota média real é 2,97, invertendo a leitura do gráfico.
+## 📈 Resultados / Insights
 
-## Estrutura do Repositório
+Análise completa em **[`analise/insights.md`](analise/insights.md)**. Números de 2025: **R$ 3.282.372,74** de faturamento (82,06% da meta de R$ 4 mi), margem de contribuição de **27,39%** e **NPS de −46,7**.
+
+- **Faturamento e lucro apontam para lados opostos.** Ração e Farmácia são 61,3% do faturamento mas apenas 41,3% da margem (18,4% contra 41,5% das demais categorias). As quatro categorias "pequenas" — Acessórios, Brinquedos, Higiene e Alimentação — já geram **58,7% da margem total**. Um painel que ranqueia só por faturamento leva o investimento para o lado errado.
+- **A queda de 11,27% no ticket médio de dezembro é um falso alarme.** O painel calcula ticket como faturamento ÷ itens; por pedido, dezembro subiu **32,6%** (R$ 208,52 → R$ 276,50). A cesta passou de 2,0 para 2,98 itens por pedido — dezembro foi o melhor mês do ano em faturamento *e* em margem, e mesmo assim aparece sinalizado em vermelho.
+- **O visual de NPS soma as notas em vez de tirar a média.** Exibe 9539 para os detratores quando a nota média real é 2,97, invertendo a leitura do gráfico: o pior grupo aparece com a "nota" mais alta. A correção é trocar a agregação de `sum` para `average`.
+- **O próprio NPS (−46,7) não aparece em lugar nenhum do one page.** O painel mostra a divisão entre promotores, neutros e detratores, mas nunca o indicador principal que a diretoria espera ver.
+- **Espírito Santo tem 330 respostas de NPS e zero vendas** — o estado não existe na tabela fato. No mapa ele fica em branco, visualmente indistinguível de "vendeu pouco".
+- **Concentração regional:** o Sudeste responde por 45,4% do faturamento, e SP/MG/RJ sozinhos somam 45,3%. A margem é homogênea entre regiões (27,1% a 27,8%), então a diferença regional é de volume, não de rentabilidade.
+- **Ressalva metodológica:** as notas de NPS estão distribuídas de forma quase uniforme entre 0 e 10 (8,6% a 9,7% por nota), assinatura de dado gerado aleatoriamente. O −46,7 é aritmética dessa geração, e as diferenças entre estados e motivos estão dentro do ruído amostral. A base de **vendas**, ao contrário, tem estrutura real e consistente — e é ela que sustenta as conclusões dos blocos 1 e 2.
+
+## 📁 Estrutura do projeto
 
 ```
-.
-├── dados/                    # Fontes de dados brutas (CSV) carregadas no Amazon S3
-│   ├── caramelo_fato_vendas.csv      # Tabela fato de vendas
-│   ├── caramelo_dim_produtos.csv     # Dimensão de produtos
-│   ├── caramelo_nps.csv              # Respostas da pesquisa de NPS
-│   └── caramelo_wordcloud.csv        # Termos para a nuvem de palavras
-│
-├── analise/                  # Análise dos dados e insights de negócio
-│   ├── insights.md                   # Respostas às perguntas do desafio
-│   ├── analise.ps1                   # Métricas dos três blocos (reprodutível)
-│   └── verifica.ps1                  # Checagens de integridade e definições
-│
-├── campos-calculados/        # Expressões de campos calculados do QuickSight
-│   └── campo_estado_calculado.txt    # Sigla da UF → nome do estado (geolocalização/mapa)
-│
-├── visuais-customizados/     # Código dos visuais customizados (Highcharts)
-│   ├── nps_variablepie_original.js   # Exemplo base da documentação Highcharts
-│   └── nps_variablepie_ajustado.json # Versão adaptada ao NPS (volume vs. qualidade)
-│
-├── configuracoes-aws/        # Configurações de infraestrutura AWS
-│   └── s3_bucket_policy.json         # Bucket policy de leitura pública dos objetos
-│
-├── imagens/                  # Imagens usadas no dashboard
+dashboard-executivo-petshop-center/
+├── README.md
+├── analise/                          # Análise dos dados e insights de negócio
+│   ├── insights.md                       # Respostas às perguntas do desafio
+│   ├── analise.ps1                       # Métricas dos três blocos (reprodutível)
+│   └── verifica.ps1                      # Checagens de integridade e definições
+├── dados/                            # Fontes de dados brutas (CSV) carregadas no Amazon S3
+│   ├── caramelo_fato_vendas.csv          # Tabela fato de vendas
+│   ├── caramelo_dim_produtos.csv         # Dimensão de produtos
+│   ├── caramelo_nps.csv                  # Respostas da pesquisa de NPS
+│   └── caramelo_wordcloud.csv            # Termos para a nuvem de palavras
+├── campos-calculados/                # Expressões de campos calculados do QuickSight
+│   └── campo_estado_calculado.txt        # Sigla da UF → nome do estado (geolocalização/mapa)
+├── visuais-customizados/             # Código dos visuais customizados (Highcharts)
+│   ├── nps_variablepie_original.js       # Exemplo base da documentação Highcharts
+│   └── nps_variablepie_ajustado.json     # Versão adaptada ao NPS (volume vs. qualidade)
+├── configuracoes-aws/                # Configurações de infraestrutura AWS
+│   └── s3_bucket_policy.json             # Bucket policy de leitura pública dos objetos
+├── imagens/                          # Imagens usadas no dashboard
 │   ├── cachorro.png
 │   ├── gato.png
 │   ├── coelho.png
 │   ├── passaro.png
 │   ├── porquinho.png
 │   └── pet.jpg
-│
-└── midia/                    # Registro visual do dashboard
-    ├── dashboard-one-page.pdf        # Export em PDF do one page completo
-    ├── dashboard-passeio.mp4         # Gravação de tela do dashboard em uso
+└── midia/                            # Registro visual do dashboard
+    ├── dashboard-one-page.pdf            # Export em PDF do one page completo
+    ├── dashboard-passeio.mp4             # Gravação de tela do dashboard em uso
     └── gifs/
-        └── dashboard-passeio.gif     # Mesma gravação, para exibir no README
+        └── dashboard-passeio.gif         # Mesma gravação, exibida no README
 ```
+
+</details>
