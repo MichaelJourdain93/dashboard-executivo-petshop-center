@@ -54,6 +54,14 @@ As *analyses* consomem múltiplos *datasets* e concentram a modelagem analítica
 **5. Publicação (Deploy do Dashboard)**
 Por fim, o *deploy* do dashboard fecha o fluxo, entregando a visão consolidada em uma única tela — o *one page* de resultados e satisfação do cliente.
 
+## Demonstração
+
+O painel foi construído no AWS QuickSight. Como a assinatura foi encerrada, o registro visual abaixo preserva o resultado e a interatividade do dashboard.
+
+📄 **[Dashboard completo em PDF](midia/dashboard-one-page.pdf)** — o *one page* inteiro, com os três blocos.
+
+Os GIFs de interatividade (parâmetro de meta, seleção de estado filtrando a tabela, filtro de classificação na nuvem de palavras) ficam em [`midia/`](midia/).
+
 ## Estrutura do Repositório
 
 ```
@@ -74,11 +82,16 @@ Por fim, o *deploy* do dashboard fecha o fluxo, entregando a visão consolidada 
 ├── configuracoes-aws/        # Configurações de infraestrutura AWS
 │   └── s3_bucket_policy.json         # Bucket policy de leitura pública dos objetos
 │
-└── imagens/                  # Imagens usadas no dashboard
-    ├── cachorro.png
-    ├── gato.png
-    ├── coelho.png
-    ├── passaro.png
-    ├── porquinho.png
-    └── pet.jpg
+├── imagens/                  # Imagens usadas no dashboard
+│   ├── cachorro.png
+│   ├── gato.png
+│   ├── coelho.png
+│   ├── passaro.png
+│   ├── porquinho.png
+│   └── pet.jpg
+│
+└── midia/                    # Registro visual do dashboard
+    ├── dashboard-one-page.pdf        # Export em PDF do one page completo
+    ├── gifs/                         # GIFs de interatividade
+    └── prints/                       # Capturas de cada bloco
 ```
