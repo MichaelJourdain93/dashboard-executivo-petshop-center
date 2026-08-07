@@ -1,0 +1,37 @@
+ID_Produto,Nome_Produto,Categoria,Animal,Preco_Sugerido,Custo_Base
+PROD-100,Ração Cachorro Mod 1,Ração,Cachorro,173.23,144.9
+PROD-101,Ração Cachorro Mod 2,Ração,Cachorro,192.53,163.08
+PROD-102,Ração Cachorro Mod 3,Ração,Cachorro,161.43,138.88
+PROD-103,Ração Gato Mod 1,Ração,Gato,130.11,104.98
+PROD-104,Ração Gato Mod 2,Ração,Gato,154.55,125.57
+PROD-105,Ração Gato Mod 3,Ração,Gato,128.43,103.14
+PROD-106,Brinquedos Cachorro Mod 1,Brinquedos,Cachorro,49.49,23.84
+PROD-107,Brinquedos Cachorro Mod 2,Brinquedos,Cachorro,40.7,19.73
+PROD-108,Brinquedos Cachorro Mod 3,Brinquedos,Cachorro,42.36,18.95
+PROD-109,Brinquedos Gato Mod 1,Brinquedos,Gato,34.29,14.58
+PROD-110,Brinquedos Gato Mod 2,Brinquedos,Gato,36.17,16.03
+PROD-111,Brinquedos Gato Mod 3,Brinquedos,Gato,32.82,13.65
+PROD-112,Higiene Cachorro Mod 1,Higiene,Cachorro,59.21,34.18
+PROD-113,Higiene Cachorro Mod 2,Higiene,Cachorro,54.59,32.69
+PROD-114,Higiene Cachorro Mod 3,Higiene,Cachorro,61.66,39.23
+PROD-115,Higiene Gato Mod 1,Higiene,Gato,51.61,29.92
+PROD-116,Higiene Gato Mod 2,Higiene,Gato,43.48,22.16
+PROD-117,Higiene Gato Mod 3,Higiene,Gato,56.98,29.76
+PROD-118,Acessórios Pássaro Mod 1,Acessórios,Pássaro,23.53,12.71
+PROD-119,Acessórios Pássaro Mod 2,Acessórios,Pássaro,26.38,13.35
+PROD-120,Acessórios Pássaro Mod 3,Acessórios,Pássaro,22.17,11.1
+PROD-121,Acessórios Coelho Mod 1,Acessórios,Coelho,68.83,35.32
+PROD-122,Acessórios Coelho Mod 2,Acessórios,Coelho,74.21,39.73
+PROD-123,Acessórios Coelho Mod 3,Acessórios,Coelho,75.48,41.38
+PROD-124,Alimentação Pássaro Mod 1,Alimentação,Pássaro,15.21,11.65
+PROD-125,Alimentação Pássaro Mod 2,Alimentação,Pássaro,17.11,12.6
+PROD-126,Alimentação Pássaro Mod 3,Alimentação,Pássaro,16.98,12.4
+PROD-127,Alimentação Porquinho da Índia Mod 1,Alimentação,Porquinho da Índia,20.59,16.12
+PROD-128,Alimentação Porquinho da Índia Mod 2,Alimentação,Porquinho da Índia,17.53,14.24
+PROD-129,Alimentação Porquinho da Índia Mod 3,Alimentação,Porquinho da Índia,17.27,13.94
+PROD-130,Farmácia Cachorro Mod 1,Farmácia,Cachorro,212.65,141.63
+PROD-131,Farmácia Cachorro Mod 2,Farmácia,Cachorro,241.7,159.53
+PROD-132,Farmácia Cachorro Mod 3,Farmácia,Cachorro,205.54,132.99
+PROD-133,Farmácia Gato Mod 1,Farmácia,Gato,169.53,106.61
+PROD-134,Farmácia Gato Mod 2,Farmácia,Gato,165.75,102.09
+PROD-135,Farmácia Gato Mod 3,Farmácia,Gato,205.52,137.92

@@ -53,3 +53,32 @@ As *analyses* consomem múltiplos *datasets* e concentram a modelagem analítica
 
 **5. Publicação (Deploy do Dashboard)**
 Por fim, o *deploy* do dashboard fecha o fluxo, entregando a visão consolidada em uma única tela — o *one page* de resultados e satisfação do cliente.
+
+## Estrutura do Repositório
+
+```
+.
+├── dados/                    # Fontes de dados brutas (CSV) carregadas no Amazon S3
+│   ├── caramelo_fato_vendas.csv      # Tabela fato de vendas
+│   ├── caramelo_dim_produtos.csv     # Dimensão de produtos
+│   ├── caramelo_nps.csv              # Respostas da pesquisa de NPS
+│   └── caramelo_wordcloud.csv        # Termos para a nuvem de palavras
+│
+├── campos-calculados/        # Expressões de campos calculados do QuickSight
+│   └── campo_estado_calculado.txt    # Sigla da UF → nome do estado (geolocalização/mapa)
+│
+├── visuais-customizados/     # Código dos visuais customizados (Highcharts)
+│   ├── nps_variablepie_original.js   # Exemplo base da documentação Highcharts
+│   └── nps_variablepie_ajustado.json # Versão adaptada ao NPS (volume vs. qualidade)
+│
+├── configuracoes-aws/        # Configurações de infraestrutura AWS
+│   └── s3_bucket_policy.json         # Bucket policy de leitura pública dos objetos
+│
+└── imagens/                  # Imagens usadas no dashboard
+    ├── cachorro.png
+    ├── gato.png
+    ├── coelho.png
+    ├── passaro.png
+    ├── porquinho.png
+    └── pet.jpg
+```
