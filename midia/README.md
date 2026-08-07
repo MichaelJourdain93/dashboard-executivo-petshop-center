@@ -1,8 +1,6 @@
 # Mídia
 
 Registro visual do dashboard, preservado antes do encerramento da assinatura do QuickSight.
-Todos os arquivos refletem a **versão corrigida** do painel, com a nota média do NPS já agregada
-como `average` (2.97 / 7.49 / 9.49).
 
 | Arquivo | Conteúdo |
 |---|---|

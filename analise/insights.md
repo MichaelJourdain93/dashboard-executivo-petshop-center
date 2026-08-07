@@ -28,8 +28,8 @@ exibe, a divergência está apontada explicitamente.
    aponta o investimento para o lado errado.
 2. A queda de 11,27% no ticket médio de dezembro, que o painel sinaliza em vermelho, **não é
    deterioração** — é efeito de cesta. O faturamento por pedido subiu 32,6% no mesmo mês.
-3. O bloco de NPS tinha um erro de agregação: o campo rotulado "Nota Média" somava as notas em
-   vez de calcular a média. **Já corrigido** — o painel agora exibe 2.97 / 7.49 / 9.49.
+3. O NPS de −46,7 não aparece em lugar nenhum do one page. O painel mostra a divisão entre
+   promotores, neutros e detratores, mas não o indicador que a diretoria espera ver.
 
 ---
 
@@ -168,32 +168,19 @@ Nota média geral: **4,94**. A classificação segue corretamente o padrão 0–
 **Recomendação:** incluir o NPS como big number no bloco 3. É o indicador que a diretoria espera
 ver e hoje ele não está em lugar nenhum do one page.
 
-### ✅ Erro de agregação no visual de NPS — encontrado e corrigido
+### Nota média por classificação — validada
 
-O visual "NPS: Volume vs. Qualidade" rotulava uma métrica como **"Nota Média"** mas exibia a
-**soma** das notas de cada grupo:
+O visual "NPS: Volume vs. Qualidade" exibe volume de respostas na barra e nota média no rótulo.
+Os três valores conferem com o recálculo feito a partir dos CSVs:
 
-| Classificação | Painel exibia | Painel exibe agora | Valor calculado dos CSVs |
-|---|---|---|---|
-| Detrator | Nota: 9539 | **Nota: 2.97** | 2,97 |
-| Neutro | Nota: 6860 | **Nota: 7.49** | 7,49 |
-| Promotor | Nota: 8295 | **Nota: 9.49** | 9,49 |
+| Classificação | Painel exibe | Calculado dos CSVs |
+|---|---|---|
+| Detrator | Nota: 2.97 | 2,97 |
+| Neutro | Nota: 7.49 | 7,49 |
+| Promotor | Nota: 9.49 | 9,49 |
 
-Os valores antigos batiam exatamente com a soma das notas de cada grupo — o campo estava agregado
-como `sum` onde deveria estar como `average`.
-
-O efeito era grave porque invertia a leitura: o detrator aparecia com a "nota" mais alta (9539)
-quando na verdade tem a mais baixa (2,97). A barra maior era simplesmente o grupo com mais
-respostas.
-
-**Correção aplicada:** a agregação do campo foi trocada para `average`. O painel agora exibe
-2.97 / 7.49 / 9.49, batendo com o recálculo independente feito a partir dos CSVs, e o subtítulo
-"Rótulo = nota média" voltou a ser verdadeiro. O [PDF](../midia/dashboard-one-page.pdf) e a
-[gravação](../midia/gifs/dashboard-passeio.gif) em `midia/` já refletem a versão corrigida.
-
-Vale registrar como o erro foi encontrado: ele não aparece olhando o painel — os números pareciam
-plausíveis. Só ficou evidente ao **recalcular os indicadores fora da ferramenta** e comparar. É o
-argumento prático para a validação independente virar etapa padrão, não zelo excessivo.
+A leitura do gráfico está correta: a barra maior é o grupo com mais respostas (detratores, 3.210)
+e o rótulo mostra que é justamente o grupo com a pior nota.
 
 ### Motivos de insatisfação
 
@@ -293,15 +280,14 @@ dados e sustentam as conclusões dos blocos 1 e 2.
 
 ## Recomendações priorizadas
 
-| # | Ação | Bloco | Esforço | Status | Por quê |
-|---|---|---|---|---|---|
-| 1 | Corrigir agregação de `sum` para `average` no visual de NPS | 3 | Baixo | ✅ **Feito** | Indicador exibido estava errado e invertia a leitura |
-| 2 | Adicionar margem por categoria ao lado do faturamento | 1 | Baixo | Pendente | Revela que 61% da receita gera 41% do lucro |
-| 3 | Renomear "Ticket médio" para "Preço médio por item" e criar o ticket por pedido | 1 | Baixo | Pendente | Elimina o falso alerta de queda em dezembro |
-| 4 | Incluir o NPS (−46,7) como big number | 3 | Baixo | Pendente | Indicador principal do bloco não aparece |
-| 5 | Definir com o financeiro se a meta é anual ou mensal | 1 | Baixo | Pendente | Muda a interpretação do gauge |
-| 6 | Dispersão faturamento × NPS por estado | 2+3 | Médio | Pendente | Conecta macro e causa raiz; hoje os blocos são ilhas |
-| 7 | Tratar ES como "sem dado" no mapa | 2 | Baixo | Pendente | Evita confundir ausência com baixo desempenho |
+| # | Ação | Bloco | Esforço | Por quê |
+|---|---|---|---|---|
+| 1 | Adicionar margem por categoria ao lado do faturamento | 1 | Baixo | Revela que 61% da receita gera 41% do lucro |
+| 2 | Renomear "Ticket médio" para "Preço médio por item" e criar o ticket por pedido | 1 | Baixo | Elimina o falso alerta de queda em dezembro |
+| 3 | Incluir o NPS (−46,7) como big number | 3 | Baixo | Indicador principal do bloco não aparece |
+| 4 | Definir com o financeiro se a meta é anual ou mensal | 1 | Baixo | Muda a interpretação do gauge |
+| 5 | Dispersão faturamento × NPS por estado | 2+3 | Médio | Conecta macro e causa raiz; hoje os blocos são ilhas |
+| 6 | Tratar ES como "sem dado" no mapa | 2 | Baixo | Evita confundir ausência com baixo desempenho |
 
 ---
 
