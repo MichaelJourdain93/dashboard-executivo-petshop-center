@@ -58,9 +58,12 @@ Por fim, o *deploy* do dashboard fecha o fluxo, entregando a visão consolidada 
 
 O painel foi construído no AWS QuickSight. Como a assinatura foi encerrada, o registro visual abaixo preserva o resultado e a interatividade do dashboard.
 
-📄 **[Dashboard completo em PDF](midia/dashboard-one-page.pdf)** — o *one page* inteiro, com os três blocos.
+![Passeio pelo dashboard](midia/gifs/dashboard-passeio.gif)
 
-Os GIFs de interatividade (parâmetro de meta, seleção de estado filtrando a tabela, filtro de classificação na nuvem de palavras) ficam em [`midia/`](midia/).
+*Meta editável recalculando o atingimento, alternância entre R$ e %, seleção de estado no mapa filtrando a tabela por tipo de animal, e a nuvem de palavras do NPS.*
+
+📄 **[Dashboard completo em PDF](midia/dashboard-one-page.pdf)** — o *one page* inteiro, com os três blocos.
+🎬 **[Gravação em MP4](midia/dashboard-passeio.mp4)** — mesma demonstração em qualidade cheia (2280x1080).
 
 ## Estrutura do Repositório
 
@@ -92,6 +95,7 @@ Os GIFs de interatividade (parâmetro de meta, seleção de estado filtrando a t
 │
 └── midia/                    # Registro visual do dashboard
     ├── dashboard-one-page.pdf        # Export em PDF do one page completo
-    ├── gifs/                         # GIFs de interatividade
-    └── prints/                       # Capturas de cada bloco
+    ├── dashboard-passeio.mp4         # Gravação de tela do dashboard em uso
+    └── gifs/
+        └── dashboard-passeio.gif     # Mesma gravação, para exibir no README
 ```
