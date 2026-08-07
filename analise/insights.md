@@ -168,17 +168,6 @@ Nota média geral: **4,94**. A classificação segue corretamente o padrão 0–
 **Recomendação:** incluir o NPS como big number no bloco 3. É o indicador que a diretoria espera
 ver e hoje ele não está em lugar nenhum do one page.
 
-### Nota média por classificação — validada
-
-O visual "NPS: Volume vs. Qualidade" exibe volume de respostas na barra e nota média no rótulo.
-Os três valores conferem com o recálculo feito a partir dos CSVs:
-
-| Classificação | Painel exibe | Calculado dos CSVs |
-|---|---|---|
-| Detrator | Nota: 2.97 | 2,97 |
-| Neutro | Nota: 7.49 | 7,49 |
-| Promotor | Nota: 9.49 | 9,49 |
-
 A leitura do gráfico está correta: a barra maior é o grupo com mais respostas (detratores, 3.210)
 e o rótulo mostra que é justamente o grupo com a pior nota.
 
