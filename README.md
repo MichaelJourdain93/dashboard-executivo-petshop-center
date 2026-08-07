@@ -141,14 +141,14 @@ No installation required — only PowerShell, already present on Windows.
 
 ## 📈 Results / Insights
 
-Full analysis in **[`analise/insights.md`](analise/insights.md)**. Headline figures for 2025: **R$ 3,282,372.74** in revenue (82.06% of the R$ 4M target), **27.39%** contribution margin, and an **NPS of −46.7**.
+Full analysis in **[`analise/insights.md`](analise/insights.md)**. Headline figures for 2025: **R$ 3,282,372.74** in revenue (82.06% of the R$ 4M target), **27.39%** contribution margin, and **5,000 NPS responses** averaging **4.94**.
 
 - **Revenue and profit point in opposite directions.** Pet Food and Pharmacy are 61.3% of revenue but only 41.3% of margin (18.4% vs. 41.5% for the other categories). The four "small" categories — Accessories, Toys, Hygiene, and Food — already generate **58.7% of total margin**. A panel that ranks by revenue alone steers investment the wrong way.
 - **December's 11.27% drop in average ticket is a false alarm.** The panel computes ticket as revenue ÷ items; per order, December rose **32.6%** (R$ 208.52 → R$ 276.50). The basket went from 2.0 to 2.98 items per order — December was the best month of the year in both revenue and margin, yet it is flagged in red.
-- **The NPS itself (−46.7) is nowhere on the one page.** The panel shows the promoter/passive/detractor split and the average score per group (2.97 / 7.49 / 9.49, all matching the independent recalculation), but never the headline indicator the board expects.
+- **Two thirds of the survey sits in the detractor band.** Of 5,000 responses, 64.2% score 0–6 (average 2.97), 18.3% score 7–8 (7.49) and 17.5% score 9–10 (9.49). The overall average is 4.94.
 - **Espírito Santo has 330 NPS responses and zero sales** — the state does not exist in the fact table. On the map it renders blank, visually indistinguishable from "sold little".
 - **Regional concentration:** Southeast holds 45.4% of revenue, and SP/MG/RJ alone account for 45.3%. Margin is homogeneous across regions (27.1% to 27.8%), so the regional gap is about volume, not profitability.
-- **Methodological caveat:** the NPS scores are distributed almost uniformly across 0–10 (8.6% to 9.7% per score), the signature of randomly generated data. The −46.7 is arithmetic of that generation, and the differences between states and reasons are within sampling noise. The **sales** base, in contrast, has real and consistent structure — which is what sustains the Block 1 and 2 conclusions.
+- **Methodological caveat:** the survey scores are distributed almost uniformly across 0–10 (8.6% to 9.7% per score). That is why every cut of Block 3 comes out flat — average scores per reason (4.78 to 5.17) and per state (4.53 to 5.12) all orbit the midpoint of the scale — so the analysis describes volume and score without ranking reasons or states. The **sales** base, in contrast, has real and consistent structure, which is what sustains the Block 1 and 2 conclusions.
 
 ## 📁 Project structure
 
@@ -330,14 +330,14 @@ Não requer instalação — apenas o PowerShell, já presente no Windows.
 
 ## 📈 Resultados / Insights
 
-Análise completa em **[`analise/insights.md`](analise/insights.md)**. Números de 2025: **R$ 3.282.372,74** de faturamento (82,06% da meta de R$ 4 mi), margem de contribuição de **27,39%** e **NPS de −46,7**.
+Análise completa em **[`analise/insights.md`](analise/insights.md)**. Números de 2025: **R$ 3.282.372,74** de faturamento (82,06% da meta de R$ 4 mi), margem de contribuição de **27,39%** e **5.000 respostas de NPS** com nota média **4,94**.
 
 - **Faturamento e lucro apontam para lados opostos.** Ração e Farmácia são 61,3% do faturamento mas apenas 41,3% da margem (18,4% contra 41,5% das demais categorias). As quatro categorias "pequenas" — Acessórios, Brinquedos, Higiene e Alimentação — já geram **58,7% da margem total**. Um painel que ranqueia só por faturamento leva o investimento para o lado errado.
 - **A queda de 11,27% no ticket médio de dezembro é um falso alarme.** O painel calcula ticket como faturamento ÷ itens; por pedido, dezembro subiu **32,6%** (R$ 208,52 → R$ 276,50). A cesta passou de 2,0 para 2,98 itens por pedido — dezembro foi o melhor mês do ano em faturamento *e* em margem, e mesmo assim aparece sinalizado em vermelho.
-- **O próprio NPS (−46,7) não aparece em lugar nenhum do one page.** O painel mostra a divisão entre promotores, neutros e detratores e a nota média de cada grupo (2.97 / 7.49 / 9.49, todas batendo com o recálculo independente), mas nunca o indicador principal que a diretoria espera ver.
+- **Dois terços da pesquisa estão na faixa de detrator.** Das 5.000 respostas, 64,2% dão nota 0–6 (média 2,97), 18,3% dão 7–8 (7,49) e 17,5% dão 9–10 (9,49). A nota média geral é 4,94.
 - **Espírito Santo tem 330 respostas de NPS e zero vendas** — o estado não existe na tabela fato. No mapa ele fica em branco, visualmente indistinguível de "vendeu pouco".
 - **Concentração regional:** o Sudeste responde por 45,4% do faturamento, e SP/MG/RJ sozinhos somam 45,3%. A margem é homogênea entre regiões (27,1% a 27,8%), então a diferença regional é de volume, não de rentabilidade.
-- **Ressalva metodológica:** as notas de NPS estão distribuídas de forma quase uniforme entre 0 e 10 (8,6% a 9,7% por nota), assinatura de dado gerado aleatoriamente. O −46,7 é aritmética dessa geração, e as diferenças entre estados e motivos estão dentro do ruído amostral. A base de **vendas**, ao contrário, tem estrutura real e consistente — e é ela que sustenta as conclusões dos blocos 1 e 2.
+- **Ressalva metodológica:** as notas da pesquisa estão distribuídas de forma quase uniforme entre 0 e 10 (8,6% a 9,7% por nota). É por isso que todos os cortes do bloco 3 saem parecidos — as notas médias por motivo (4,78 a 5,17) e por estado (4,53 a 5,12) orbitam o meio da escala — então a análise se limita a descrever volume e nota, sem ranquear motivos ou estados. A base de **vendas**, ao contrário, tem estrutura real e consistente, e é ela que sustenta as conclusões dos blocos 1 e 2.
 
 ## 📁 Estrutura do projeto
 

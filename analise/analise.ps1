@@ -137,12 +137,13 @@ $rows | Group-Object Estado | ForEach-Object {
 
 "=============== 3. NPS ==============="
 $notas = $nps | ForEach-Object { [int]$_.Nota_NPS }
+# O bloco 3 do painel mede volume de respostas e nota media. As metricas abaixo
+# se limitam a isso: contagem e media, sem score derivado.
 "Respostas............: {0:N0}" -f $nps.Count
 "Nota min/max.........: {0} / {1}" -f ($notas | Measure-Object -Minimum).Minimum, ($notas | Measure-Object -Maximum).Maximum
-"Nota MEDIA real......: {0:N2}" -f (($notas | Measure-Object -Average).Average)
-"Nota SOMA............: {0:N0}" -f (($notas | Measure-Object -Sum).Sum)
+"Nota MEDIA geral.....: {0:N2}" -f (($notas | Measure-Object -Average).Average)
 ""
-"--- Distribuicao por CLASSIFICACAO ---"
+"--- Volume e nota por CLASSIFICACAO ---"
 $nps | Group-Object Classificacao_NPS | ForEach-Object {
   $ns = $_.Group | ForEach-Object { [int]$_.Nota_NPS }
   [pscustomobject]@{
@@ -150,61 +151,39 @@ $nps | Group-Object Classificacao_NPS | ForEach-Object {
     Respostas = $_.Count
     Pct = [math]::Round($_.Count/$nps.Count*100,1)
     NotaMedia = [math]::Round(($ns | Measure-Object -Average).Average,2)
-    NotaSoma = ($ns | Measure-Object -Sum).Sum
+    NotaMin = ($ns | Measure-Object -Minimum).Minimum
+    NotaMax = ($ns | Measure-Object -Maximum).Maximum
   }
 } | Sort-Object Respostas -Descending | Format-Table -AutoSize | Out-String -Width 200
 
-$promo = ($nps | Where-Object { $_.Classificacao_NPS -eq "Promotor" }).Count
-$detra = ($nps | Where-Object { $_.Classificacao_NPS -eq "Detrator" }).Count
-"NPS SCORE = %Promotores - %Detratores = {0:N1}% - {1:N1}% = {2:N1}" -f ($promo/$nps.Count*100), ($detra/$nps.Count*100), (($promo-$detra)/$nps.Count*100)
-""
-
-"--- MOTIVO PRINCIPAL (geral) ---"
+"--- Volume e nota por MOTIVO ---"
 $nps | Group-Object Motivo_Principal | ForEach-Object {
-  [pscustomobject]@{ Motivo = $_.Name; Respostas = $_.Count; Pct = [math]::Round($_.Count/$nps.Count*100,1) }
-} | Sort-Object Respostas -Descending | Format-Table -AutoSize | Out-String -Width 200
-
-"--- MOTIVO x CLASSIFICACAO ---"
-$nps | Group-Object Motivo_Principal | ForEach-Object {
-  $g = $_.Group
-  $d = ($g | Where-Object { $_.Classificacao_NPS -eq "Detrator" }).Count
-  $n = ($g | Where-Object { $_.Classificacao_NPS -eq "Neutro" }).Count
-  $p = ($g | Where-Object { $_.Classificacao_NPS -eq "Promotor" }).Count
+  $ns = $_.Group | ForEach-Object { [int]$_.Nota_NPS }
   [pscustomobject]@{
     Motivo = $_.Name
-    Total = $g.Count
-    Detrator = $d
-    PctDetrator = [math]::Round($d/$g.Count*100,1)
-    Neutro = $n
-    Promotor = $p
-    NPS = [math]::Round(($p-$d)/$g.Count*100,1)
+    Respostas = $_.Count
+    Pct = [math]::Round($_.Count/$nps.Count*100,1)
+    NotaMedia = [math]::Round(($ns | Measure-Object -Average).Average,2)
   }
-} | Sort-Object NPS | Format-Table -AutoSize | Out-String -Width 200
+} | Sort-Object Respostas -Descending | Format-Table -AutoSize | Out-String -Width 200
 
-"--- NPS por ESTADO (min 100 respostas) x FATURAMENTO ---"
-$nps | Group-Object Estado | Where-Object { $_.Count -ge 100 } | ForEach-Object {
-  $g = $_.Group
-  $d = ($g | Where-Object { $_.Classificacao_NPS -eq "Detrator" }).Count
-  $p = ($g | Where-Object { $_.Classificacao_NPS -eq "Promotor" }).Count
-  $ns = $g | ForEach-Object { [int]$_.Nota_NPS }
+"--- Volume e nota por ESTADO ---"
+$nps | Group-Object Estado | ForEach-Object {
+  $ns = $_.Group | ForEach-Object { [int]$_.Nota_NPS }
   [pscustomobject]@{
     Estado = $_.Name
-    Respostas = $g.Count
-    NPS = [math]::Round(($p-$d)/$g.Count*100,1)
+    Respostas = $_.Count
     NotaMedia = [math]::Round(($ns | Measure-Object -Average).Average,2)
     Faturamento = [math]::Round($estFat[$_.Name],2)
-    PctFatTotal = [math]::Round($estFat[$_.Name]/$totFat*100,1)
   }
-} | Sort-Object NPS | Format-Table -AutoSize | Out-String -Width 200
+} | Sort-Object Respostas -Descending | Format-Table -AutoSize | Out-String -Width 200
 
-"--- NPS por MES ---"
+"--- Volume e nota por MES ---"
 $nps | Group-Object { $_.Data_Resposta.Substring(0,7) } | Sort-Object Name | ForEach-Object {
-  $g = $_.Group
-  $d = ($g | Where-Object { $_.Classificacao_NPS -eq "Detrator" }).Count
-  $p = ($g | Where-Object { $_.Classificacao_NPS -eq "Promotor" }).Count
+  $ns = $_.Group | ForEach-Object { [int]$_.Nota_NPS }
   [pscustomobject]@{
     Mes = $_.Name
-    Respostas = $g.Count
-    NPS = [math]::Round(($p-$d)/$g.Count*100,1)
+    Respostas = $_.Count
+    NotaMedia = [math]::Round(($ns | Measure-Object -Average).Average,2)
   }
 } | Format-Table -AutoSize | Out-String -Width 200

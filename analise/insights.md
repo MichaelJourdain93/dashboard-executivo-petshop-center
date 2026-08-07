@@ -19,7 +19,7 @@ exibe, a divergência está apontada explicitamente.
 | Margem de contribuição | R$ 899.185,64 (**27,39%**) |
 | Pedidos | 15.000 · 31.258 itens |
 | Ticket médio por pedido | R$ 218,82 |
-| NPS | **−46,7** (17,5% promotores · 64,2% detratores) |
+| Respostas de NPS | 5.000 · nota média **4,94** · 64,2% na faixa de detrator |
 
 **As três conclusões que mudam decisão:**
 
@@ -28,8 +28,8 @@ exibe, a divergência está apontada explicitamente.
    aponta o investimento para o lado errado.
 2. A queda de 11,27% no ticket médio de dezembro, que o painel sinaliza em vermelho, **não é
    deterioração** — é efeito de cesta. O faturamento por pedido subiu 32,6% no mesmo mês.
-3. O NPS de −46,7 não aparece em lugar nenhum do one page. O painel mostra a divisão entre
-   promotores, neutros e detratores, mas não o indicador que a diretoria espera ver.
+3. Espírito Santo aparece com 330 respostas de NPS e **zero vendas** — o estado não existe na
+   tabela fato. No mapa ele fica em branco, indistinguível de "vendeu pouco".
 
 ---
 
@@ -150,60 +150,62 @@ puxam ração e farmácia).
 
 ## Bloco 3 — Satisfação do Cliente (NPS)
 
-### O indicador que falta no painel
+O bloco mede duas coisas: **volume de respostas** e **nota média**. É sobre isso que a análise
+abaixo se limita a falar.
 
-O painel mostra a distribuição entre promotores, neutros e detratores, mas **não exibe o NPS
-propriamente dito**. Calculado pela regra padrão:
+### Volume e nota por classificação
 
-**NPS = %Promotores − %Detratores = 17,5% − 64,2% = −46,7**
+Base: **5.000 respostas** no ano de 2025, com notas de 0 a 10. A classificação segue o padrão
+0–6 (detrator), 7–8 (neutro) e 9–10 (promotor).
 
-| Classificação | Respostas | % | Nota média real |
+| Classificação | Respostas | % do total | Nota média |
 |---|---|---|---|
 | Detrator (0–6) | 3.210 | 64,2% | 2,97 |
 | Neutro (7–8) | 916 | 18,3% | 7,49 |
 | Promotor (9–10) | 874 | 17,5% | 9,49 |
 
-Nota média geral: **4,94**. A classificação segue corretamente o padrão 0–6 / 7–8 / 9–10.
+Nota média geral: **4,94**.
 
-**Recomendação:** incluir o NPS como big number no bloco 3. É o indicador que a diretoria espera
-ver e hoje ele não está em lugar nenhum do one page.
+A leitura direta: **quase dois terços das respostas estão na faixa de detrator**, e é esse o
+grupo de maior volume — a barra mais longa do gráfico é também a de pior nota.
 
-A leitura do gráfico está correta: a barra maior é o grupo com mais respostas (detratores, 3.210)
-e o rótulo mostra que é justamente o grupo com a pior nota.
+### Volume e nota por motivo
 
-### Motivos de insatisfação
-
-| Motivo | Respostas | % | NPS do grupo |
+| Motivo | Respostas | % | Nota média |
 |---|---|---|---|
-| Atendimento | 1.063 | 21,3% | −42,2 |
-| Preço | 1.024 | 20,5% | −50,2 |
-| Variedade | 987 | 19,7% | −48,7 |
-| Tempo de Entrega | 971 | 19,4% | −45,4 |
-| Qualidade do Produto | 955 | 19,1% | −47,2 |
+| Atendimento | 1.063 | 21,3% | 5,17 |
+| Preço | 1.024 | 20,5% | 4,83 |
+| Variedade | 987 | 19,7% | 4,78 |
+| Tempo de Entrega | 971 | 19,4% | 4,96 |
+| Qualidade do Produto | 955 | 19,1% | 4,94 |
 
-Os cinco motivos estão praticamente empatados, tanto em volume (19,1% a 21,3%) quanto em NPS
-(−42 a −50). **A diferença entre eles está dentro da margem de erro amostral** (~±2,4 pontos de
-NPS para n≈1.000), então não é defensável dizer que "Preço é o maior problema". Ver a ressalva
-metodológica abaixo.
+Os cinco motivos aparecem em volume praticamente igual (19,1% a 21,3%) e com notas médias
+próximas (4,78 a 5,17 — amplitude de 0,39 ponto numa escala de 0 a 10). Nenhum motivo se destaca
+como o problema principal; a distribuição é equilibrada.
 
-### NPS por estado
+### Volume e nota por estado
 
-| Estado | Respostas | NPS | % do faturamento |
-|---|---|---|---|
-| SC | 339 | −56,9 | 6,5% |
-| CE | 341 | −54,3 | 4,9% |
-| **RJ** | 311 | **−52,1** | **15,0%** |
-| PA | 335 | −49,9 | 5,1% |
-| … | | | |
-| SP | 319 | −41,4 | 15,2% |
+| Estado | Respostas | Nota média |
+|---|---|---|
+| GO | 374 | 5,06 |
+| MS | 355 | 5,12 |
+| PR | 344 | 4,97 |
+| RS | 342 | 5,02 |
+| CE | 341 | 4,74 |
+| SC | 339 | 4,53 |
+| BA | 339 | 5,06 |
+| MG | 336 | 4,98 |
+| PA | 335 | 4,98 |
+| ES | 330 | 5,05 |
+| PE | 319 | 5,05 |
+| SP | 319 | 5,06 |
+| MT | 312 | 4,90 |
+| RJ | 311 | 4,69 |
+| AM | 304 | 4,84 |
 
-Se os dados fossem reais, **RJ seria a prioridade nº 1**: é o único estado que combina peso alto
-de faturamento (15%) com NPS no fundo do ranking. SC e CE têm NPS pior, mas pesam 6,5% e 4,9%.
-
-O cruzamento "faturamento alto + satisfação baixa = risco de receita" é a leitura mais acionável
-que o painel permite, e hoje ela não existe: mapa e NPS estão em blocos separados, sem conexão.
-**Recomendação:** um visual de dispersão (faturamento × NPS por estado) fecharia essa lacuna e
-atenderia diretamente o objetivo de "conectar indicadores macro e causa raiz".
+Quinze estados, com volume de respostas entre 304 e 374 — cobertura equilibrada, sem estado
+sub ou super-representado. As notas médias ficam entre **4,53 (SC)** e **5,12 (MS)**, uma
+amplitude de 0,59 ponto. Também aqui a distribuição é plana.
 
 ---
 
@@ -245,21 +247,12 @@ Nota  2: 9,4%   Nota  6: 8,7%   Nota 10: 8,6%
 Nota  3: 8,9%   Nota  7: 9,4%
 ```
 
-Pesquisas de NPS reais têm distribuição em J ou bimodal, com concentração nos extremos. Uniforme
-é assinatura de **dado gerado aleatoriamente**.
+Isso explica por que os cortes do bloco 3 saem todos parecidos: a proporção de 64,2% na faixa de
+detrator é o resultado mecânico de 7 das 11 notas caírem entre 0 e 6, e as notas médias por motivo
+(4,78 a 5,17) e por estado (4,53 a 5,12) orbitam o ponto médio da escala.
 
-Duas consequências honestas:
-
-1. **O NPS de −46,7 não é um diagnóstico de negócio.** Ele é aritmética da geração: 7 das 11
-   notas caem na faixa de detrator, então ~63,6% de detratores é o resultado mecânico de sortear
-   uniformemente. O valor observado (64,2%) é exatamente isso.
-2. **As diferenças entre motivos e entre estados são ruído.** Com n≈330 por estado, o erro
-   padrão do NPS é de ~4,3 pontos; a amplitude observada de 15 pontos entre 15 estados é
-   compatível com variação aleatória. O mesmo vale para os cinco motivos.
-
-Isso **não invalida o projeto** — a modelagem, os joins, os campos calculados e a interatividade
-estão corretos, e é isso que o desafio avalia. Mas as recomendações do bloco 3 devem ser lidas
-como *demonstração de método*, não como conclusão sobre clientes reais.
+Por isso a análise do bloco 3 se limita a **descrever volume e nota**, sem ranquear motivos ou
+estados: as diferenças observadas são pequenas demais para sustentar priorização.
 
 A base de **vendas**, ao contrário, tem estrutura real e consistente: a diferença de margem entre
 categorias, a concentração regional e o efeito de cesta de dezembro são padrões deliberados nos
@@ -273,10 +266,8 @@ dados e sustentam as conclusões dos blocos 1 e 2.
 |---|---|---|---|---|
 | 1 | Adicionar margem por categoria ao lado do faturamento | 1 | Baixo | Revela que 61% da receita gera 41% do lucro |
 | 2 | Renomear "Ticket médio" para "Preço médio por item" e criar o ticket por pedido | 1 | Baixo | Elimina o falso alerta de queda em dezembro |
-| 3 | Incluir o NPS (−46,7) como big number | 3 | Baixo | Indicador principal do bloco não aparece |
-| 4 | Definir com o financeiro se a meta é anual ou mensal | 1 | Baixo | Muda a interpretação do gauge |
-| 5 | Dispersão faturamento × NPS por estado | 2+3 | Médio | Conecta macro e causa raiz; hoje os blocos são ilhas |
-| 6 | Tratar ES como "sem dado" no mapa | 2 | Baixo | Evita confundir ausência com baixo desempenho |
+| 3 | Definir com o financeiro se a meta é anual ou mensal | 1 | Baixo | Muda a interpretação do gauge |
+| 4 | Tratar ES como "sem dado" no mapa | 2 | Baixo | Evita confundir ausência com baixo desempenho |
 
 ---
 
